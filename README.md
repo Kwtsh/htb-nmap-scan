@@ -31,14 +31,14 @@ I use Kali so using zsh.
 ## Usage
 
 ```bash
-sudo scan.sh <target_ip>
+sudo ./scan.sh <target_ip>
 ```
 
 Example:
 
 ```bash
 mkdir mybox && cd mybox
-sudo scan.sh 10.10.11.123
+sudo ./scan.sh 10.10.11.123
 ```
 
 ## Output
@@ -47,6 +47,7 @@ Open ports are printed to the terminal, and the detailed results are saved in a 
 
 ```
 10.10.11.123/
+├── discovery.txt
 ├── tcp.txt
 └── udp.txt
 ```
