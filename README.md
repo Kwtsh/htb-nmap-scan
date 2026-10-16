@@ -20,6 +20,14 @@ sudo mv scan.sh /usr/local/bin/
 sudo chmod +x /usr/local/bin/scan.sh
 ```
 
+Can also add it as an alias:
+
+```bash
+echo "alias scan='sudo /usr/local/bin/scan.sh'" >> ~/.zshrc
+source ~/.zshrc
+```
+I use Kali so using zsh.
+
 ## Usage
 
 ```bash
