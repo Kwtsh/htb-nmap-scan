@@ -18,7 +18,10 @@ fi
 mkdir -p "$ip"
 
 echo "[*] Scanning all TCP ports on $ip..."
-tcp=$(nmap -Pn -p- --min-rate=1000 -T4 "$ip" | grep '^[0-9]' | cut -d '/' -f 1 | tr '\n' ',' | sed 's/,$//')
+# Discovery scan: save full state list (open AND filtered) to disk so filtered
+# ports are a permanent record, then extract only OPEN ports for the deep scan.
+nmap -Pn -p- --min-rate=1000 -T4 -oN "$ip/discovery.txt" "$ip" > /dev/null
+tcp=$(grep '/tcp.* open ' "$ip/discovery.txt" | cut -d '/' -f 1 | tr '\n' ',' | sed 's/,$//')
 
 echo "[*] Scanning top 100 UDP ports on $ip..."
 udp=$(nmap -Pn -sU --top-ports 100 --min-rate=1000 "$ip" | grep '^[0-9].* open ' | cut -d '/' -f 1 | tr '\n' ',' | sed 's/,$//')
@@ -26,6 +29,7 @@ udp=$(nmap -Pn -sU --top-ports 100 --min-rate=1000 "$ip" | grep '^[0-9].* open '
 echo
 echo "[+] Open TCP ports: ${tcp:-none}"
 echo "[+] Open UDP ports: ${udp:-none}"
+echo "[i] Full TCP discovery (incl. filtered) saved to $ip/discovery.txt"
 echo
 
 if [ -n "$tcp" ]; then
